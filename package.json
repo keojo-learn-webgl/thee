@@ -1,0 +1,13 @@
+{
+  "name": "my-yuri-webgl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^2.7.0",
+    "three": "^0.144.0"
+  },
+  "scripts": {
+    "start": "parcel index.html"
+  }
+}
