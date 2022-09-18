@@ -79,13 +79,23 @@ float cnoise(vec3 P) {
   return 2.2 * n_xyz;
 }
 
+uniform float time;
+varying float vNoise;
+varying vec2 vUv;
+
 void main() {
   vec3 newPosition = position;
   float PI = 3.1415925;
-  // TODO: we know position is between 0 and 0.5 so to make it scale between 0 and PI, it's x * 2 = 1, then  * PI
-  newPosition.z += 0.15 * sin((newPosition.x + 0.25) * 2. * PI ) ;
-  //newPosition.z += 0.1 * sin(newPosition.x * 20.);
-  //newPosition.z += 0.3 * cnoise(vec3(newPosition.xy * 2., 0.));
 
+  float noise =  cnoise(vec3(newPosition.x*4., newPosition.y*4.+ time/5., 0.));
+
+  // NOTE: we know position is between 0 and 0.5 so to make it scale between 0 and PI, it's x * 2 = 1, then  * PI
+  //newPosition.z += 0.1 * sin((newPosition.x + 0.25 + time/10.) * 2. * PI ) ;
+  newPosition.z += 0.1 * noise;
+
+  vNoise = noise;
+  // NOTE: we can't use directly attribute in fragment shader, that why we pass it like this
+  vUv = uv;
+  
   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }

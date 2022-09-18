@@ -31,14 +31,7 @@ export default class Sketch {
         this.render()
     }
 
-    render() {
-        this.time += 0.5;
-        // this.mesh.rotation.x = this.time / 2000;
-        // this.mesh.rotation.y = this.time / 1000;
 
-        this.renderer.render(this.scene, this.camera);
-        window.requestAnimationFrame(this.render.bind(this))
-    }
 
     setupResize(){
        window.addEventListener('resize', this.resize.bind(this))
@@ -57,14 +50,28 @@ export default class Sketch {
         this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5, 20, 20);
 
         this.material = new THREE.ShaderMaterial({
+            uniforms:{
+                time:{value:0}
+            },
             side:THREE.DoubleSide,
             fragmentShader:fragment,
             vertexShader:vertex,
-            wireframe:true
+            // wireframe:true
         })
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.scene.add(this.mesh);
+    }
+
+    render() {
+        this.time += 0.05;
+        // this.mesh.rotation.x = this.time / 2000;
+        // this.mesh.rotation.y = this.time / 1000;
+
+        this.material.uniforms.time.value = this.time;
+
+        this.renderer.render(this.scene, this.camera);
+        window.requestAnimationFrame(this.render.bind(this))
     }
 }
 
