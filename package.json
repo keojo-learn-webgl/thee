@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@parcel/transformer-glsl": "^2.7.0",
     "parcel": "^2.7.0",
     "three": "^0.144.0"
   },
