@@ -2,6 +2,10 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import fragment from './shaders/fragment.glsl'
+import vertex from './shaders/vertex.glsl'
+
+import ocean from '../img/ocean.jpg'
 
 export default class Sketch {
     constructor(options) {
@@ -29,14 +33,7 @@ export default class Sketch {
         this.render()
     }
 
-    render() {
-        this.time += 0.5;
-        this.mesh.rotation.x = this.time / 2000;
-        this.mesh.rotation.y = this.time / 1000;
 
-        this.renderer.render(this.scene, this.camera);
-        window.requestAnimationFrame(this.render.bind(this))
-    }
 
     setupResize(){
        window.addEventListener('resize', this.resize.bind(this))
@@ -52,11 +49,30 @@ export default class Sketch {
     }
 
     addObject() {
-        this.geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-        this.material = new THREE.MeshNormalMaterial();
+        this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5, 20, 20);
+
+        this.material = new THREE.ShaderMaterial({
+            uniforms:{
+                time:{value:0},
+                oceanTexture:{value: new THREE.TextureLoader().load(ocean)}
+            },
+            side:THREE.DoubleSide,
+            fragmentShader:fragment,
+            vertexShader:vertex,
+            wireframe:true
+        })
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.scene.add(this.mesh);
+    }
+
+    render() {
+        this.time += 0.05;
+
+        this.material.uniforms.time.value = this.time;
+
+        this.renderer.render(this.scene, this.camera);
+        window.requestAnimationFrame(this.render.bind(this))
     }
 }
 
