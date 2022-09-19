@@ -80,8 +80,11 @@ float cnoise(vec3 P) {
 }
 
 uniform float time;
+
 varying float vNoise;
 varying vec2 vUv;
+
+
 
 void main() {
   vec3 newPosition = position;
@@ -97,5 +100,6 @@ void main() {
   // NOTE: we can't use directly attribute in fragment shader, that why we pass it like this
   vUv = uv;
   
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+  
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

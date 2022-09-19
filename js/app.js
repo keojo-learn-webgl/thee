@@ -5,6 +5,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import fragment from './shaders/fragment.glsl'
 import vertex from './shaders/vertex.glsl'
 
+import ocean from '../img/ocean.jpg'
+
 export default class Sketch {
     constructor(options) {
         this.time = 0;
@@ -51,7 +53,8 @@ export default class Sketch {
 
         this.material = new THREE.ShaderMaterial({
             uniforms:{
-                time:{value:0}
+                time:{value:0},
+                oceanTexture:{value: new THREE.TextureLoader().load(ocean)}
             },
             side:THREE.DoubleSide,
             fragmentShader:fragment,
