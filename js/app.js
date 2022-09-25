@@ -11,17 +11,22 @@ export default class Sketch {
     constructor(options) {
         this.time = 0;
         this.container = options.dom
+        this.scene = new THREE.Scene();
 
         this.width = this.container.offsetWidth;
         this.height = this.container.offsetHeight;
 
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
-        this.camera.position.z = 1;
 
+        this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 1000, 200);
+        this.camera.position.z = 600;
 
+        this.camera.fov = 2 * Math.atan((this.height / 2) / 600) * (180 / Math.PI)
 
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
+
         this.renderer.setSize(this.width, this.height);
         this.container.appendChild(this.renderer.domElement);
 
@@ -35,8 +40,8 @@ export default class Sketch {
 
 
 
-    setupResize(){
-       window.addEventListener('resize', this.resize.bind(this))
+    setupResize() {
+        window.addEventListener('resize', this.resize.bind(this))
     }
 
 
@@ -49,17 +54,17 @@ export default class Sketch {
     }
 
     addObject() {
-        this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5, 20, 20);
+        this.geometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
 
         this.material = new THREE.ShaderMaterial({
-            uniforms:{
-                time:{value:0},
-                oceanTexture:{value: new THREE.TextureLoader().load(ocean)}
+            uniforms: {
+                time: { value: 0 },
+                oceanTexture: { value: new THREE.TextureLoader().load(ocean) }
             },
-            side:THREE.DoubleSide,
-            fragmentShader:fragment,
-            vertexShader:vertex,
-            wireframe:true
+            side: THREE.DoubleSide,
+            fragmentShader: fragment,
+            vertexShader: vertex,
+            wireframe: true
         })
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
