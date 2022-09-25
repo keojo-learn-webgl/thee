@@ -17,10 +17,10 @@ export default class Sketch {
         this.height = this.container.offsetHeight;
 
 
-        this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 1000, 200);
+        this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 100, 2000);
         this.camera.position.z = 600;
-
-        this.camera.fov = 2 * Math.atan((this.height / 2) / 600) * (180 / Math.PI)
+        console.log('-', Math.atan((this.height / 2) / 600 ) * (180 / Math.PI))
+        this.camera.fov = 2.2 * Math.atan( (this.height / 2) / 600 ) * (180 / Math.PI)
 
         this.renderer = new THREE.WebGLRenderer({
             antialias: true,
