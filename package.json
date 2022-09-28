@@ -10,5 +10,9 @@
   },
   "scripts": {
     "start": "parcel index.html"
+  },
+  "dependencies": {
+    "fontfaceobserver": "^2.3.0",
+    "imagesloaded": "^5.0.0"
   }
 }
