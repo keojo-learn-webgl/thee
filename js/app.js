@@ -10,6 +10,8 @@ import imagesLoaded from 'imagesloaded';
 import FontFaceObserver from 'fontfaceobserver';
 //
 
+import gsap from 'gsap'
+
 //
 import Scroll from './scroll';
 //
@@ -92,10 +94,10 @@ export default class Sketch {
             this.pointer.x = (event.clientX / this.width) * 2 - 1;
             this.pointer.y = - (event.clientY / this.height) * 2 + 1;
 
-            this.raycaster.setFromCamera( this.pointer, this.camera );
-            const intersects = this.raycaster.intersectObjects( this.scene.children );
+            this.raycaster.setFromCamera(this.pointer, this.camera);
+            const intersects = this.raycaster.intersectObjects(this.scene.children);
 
-            if(intersects.length){
+            if (intersects.length) {
                 let obj = intersects[0].object;
                 obj.material.uniforms.hover.value = intersects[0].uv;
             }
@@ -116,8 +118,9 @@ export default class Sketch {
         this.material = new THREE.ShaderMaterial({
             uniforms: {
                 time: { value: 0 },
-                uImage: {value: 0},
-                hover:{value: new THREE.Vector2(0.5,0.5)},
+                uImage: { value: 0 },
+                hover: { value: new THREE.Vector2(0.5, 0.5) },
+                hoverState: { value: 0 },
                 oceanTexture: { value: new THREE.TextureLoader().load(ocean) }
             },
             side: THREE.DoubleSide,
@@ -138,8 +141,23 @@ export default class Sketch {
             // });
 
             let material = this.material.clone()
+
+            img.addEventListener('mouseenter',(event)=>{
+                gsap.to(material.uniforms.hoverState,{
+                    duration:1,
+                    value:1
+                })
+            })
+
+            img.addEventListener('mouseout',(event)=>{
+                gsap.to(material.uniforms.hoverState,{
+                    duration:1,
+                    value:0
+                })
+            })
+            //
             this.materials.push(material)
-            material.uniforms.uImage.value =  texture;
+            material.uniforms.uImage.value = texture;
 
             let mesh = new THREE.Mesh(geometry, material);
             this.scene.add(mesh)
@@ -188,7 +206,7 @@ export default class Sketch {
         this.currentScroll = this.scroll.scrollToRender;
         this.setPosition();
 
-        this.materials.forEach(m =>{
+        this.materials.forEach(m => {
             m.uniforms.time.value = this.time;
         })
 

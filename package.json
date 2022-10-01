@@ -5,6 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.7.0",
+    "gsap": "^3.11.2",
     "parcel": "^2.7.0",
     "three": "^0.144.0"
   },
